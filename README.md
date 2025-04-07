@@ -50,18 +50,56 @@ Check out the live demo at [https://pharmacyqueue.onrender.com](https://pharmacy
    dotnet ef database update
    ```
 
-3. Configure the environment variables:
+3. Configure Environment Variables:
+
+   #### Option 1: Using .env File (Recommended for Development)
+   - Copy the example environment file:
    ```
-   # .env file sample - update with your actual values
-   DB_HOST=mysql
+   cp .env.example .env
+   ```
+   - Edit the `.env` file with your actual values:
+   ```
+   # Database Connection
+   DB_HOST=localhost
    DB_PORT=3306
    DB_NAME=pharmacyqueue
    DB_USER=root
-   DB_PASSWORD=root
+   DB_PASSWORD=yourpassword
+
+   # Email Settings
    EMAIL_HOST=smtp.example.com
    EMAIL_PORT=587
    EMAIL_USERNAME=your-email@example.com
    EMAIL_PASSWORD=yourpassword
+   ```
+
+   #### Option 2: Using appsettings.json (Alternative Method)
+   - Edit `PharmacyQueue/appsettings.json` to include your database connection and email settings:
+   ```json
+   {
+     "Logging": {
+       "LogLevel": {
+         "Default": "Information",
+         "Microsoft.AspNetCore": "Warning"
+       }
+     },
+     "AllowedHosts": "*",
+     "ConnectionStrings": {
+       "DefaultConnection": "server=localhost;port=3306;database=pharmacyqueue;user=root;password=yourpassword"
+     },
+     "EmailSettings": {
+       "Host": "smtp.example.com",
+       "Port": 587,
+       "Username": "your-email@example.com",
+       "Password": "yourpassword",
+       "EnableSsl": true,
+       "From": "pharmacy@example.com"
+     },
+     "AdminSettings": {
+       "Email": "admin@pharmacy.com",
+       "Password": "Admin@123"
+     }
+   }
    ```
 
 ### Running the Application
