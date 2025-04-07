@@ -134,15 +134,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Built as a final project for .NET Web Development Course
 - Uses Font Awesome 6.0.0 from CDN (https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)
-
-## Pushing to GitHub
-
-```bash
-echo "# pharmacy-queue-management-system" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/rajveermakkar/pharmacy-queue-management-system.git
-git push -u origin main
-```
