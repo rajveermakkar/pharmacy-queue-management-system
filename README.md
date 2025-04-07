@@ -77,28 +77,23 @@ Check out the live demo at [https://pharmacyqueue.onrender.com](https://pharmacy
    - Edit `PharmacyQueue/appsettings.json` to include your database connection and email settings:
    ```json
    {
+     "ConnectionStrings": {
+       "DefaultConnection": "server=localhost;port=3306;database=PharmacyQueueDB;user=root;password=your_password;"
+     },
+     "EmailSettings": {
+       "SmtpHost": "smtp.example.com",
+       "SmtpPort": 587,
+       "SenderEmail": "example@example.com",
+       "SenderName": "Pharmacy Queue System",
+       "SenderPassword": "your_password"
+     },
      "Logging": {
        "LogLevel": {
          "Default": "Information",
          "Microsoft.AspNetCore": "Warning"
        }
      },
-     "AllowedHosts": "*",
-     "ConnectionStrings": {
-       "DefaultConnection": "server=localhost;port=3306;database=pharmacyqueue;user=root;password=yourpassword"
-     },
-     "EmailSettings": {
-       "Host": "smtp.example.com",
-       "Port": 587,
-       "Username": "your-email@example.com",
-       "Password": "yourpassword",
-       "EnableSsl": true,
-       "From": "pharmacy@example.com"
-     },
-     "AdminSettings": {
-       "Email": "admin@pharmacy.com",
-       "Password": "Admin@123"
-     }
+     "AllowedHosts": "*"
    }
    ```
 
