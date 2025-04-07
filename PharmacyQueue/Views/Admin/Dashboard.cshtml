@@ -1,0 +1,744 @@
+@model List<PharmacyQueue.Models.Appointment>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var today = DateTime.Today;
+    var todaysAppointments = Model.Where(x => x.CreatedTime.Date == today).ToList();
+    var waitingCount = todaysAppointments.Count(x => x.Status == 0);
+    var inProgressCount = todaysAppointments.Count(x => x.Status == 1);
+    var completedCount = todaysAppointments.Count(x => x.Status == 2);
+    var cancelledCount = todaysAppointments.Count(x => x.Status == 4);
+    var totalCount = todaysAppointments.Count;
+}
+
+<div class="container-fluid p-4">
+        <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card bg-primary bg-gradient text-white h-100">
+                        <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Today's Waiting</h6>
+                            <h2 class="mb-0">@waitingCount</h2>
+                        </div>
+                        <div class="icon-shape bg-opacity-25 bg-white rounded-3 p-3">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card bg-info bg-gradient text-white h-100">
+                        <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Today's In Progress</h6>
+                            <h2 class="mb-0">@inProgressCount</h2>
+                        </div>
+                        <div class="icon-shape bg-opacity-25 bg-white rounded-3 p-3">
+                            <i class="fas fa-spinner fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card bg-success bg-gradient text-white h-100">
+                        <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Today's Completed</h6>
+                            <h2 class="mb-0">@completedCount</h2>
+                        </div>
+                        <div class="icon-shape bg-opacity-25 bg-white rounded-3 p-3">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card bg-danger bg-gradient text-white h-100">
+                        <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Today's Cancelled</h6>
+                            <h2 class="mb-0">@cancelledCount</h2>
+                        </div>
+                        <div class="icon-shape bg-opacity-25 bg-white rounded-3 p-3">
+                            <i class="fas fa-times-circle fa-2x"></i>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Main Content Area -->
+    <div class="row g-3">
+        <!-- Mini Calendar and Chart -->
+        <div class="col-12 col-xl-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Today's Overview</h5>
+                        <a asp-action="Calendar" class="btn btn-primary btn-sm">
+                            <i class="fas fa-calendar-alt me-1"></i>Full Calendar
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="miniCalendar" class="mb-4"></div>
+                    <div class="chart-container" style="position: relative; height:200px;">
+                        <canvas id="appointmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments Table -->
+        <div class="col-12 col-xl-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <h5 class="mb-0 me-3">Recent Appointments</h5>
+                            <button id="viewAllBtn" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-list me-1"></i>View All
+                            </button>
+                        </div>
+                        <span class="text-primary">Today's Date: @DateTime.Now.ToString("MMM dd, yyyy")</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Purpose</th>
+                                    <th>Queue</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                @foreach (var item in Model.OrderByDescending(x => x.CreatedTime).Take(10))
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-initial rounded-circle bg-light text-primary me-2">
+                                                    @item.Name.Substring(0, 1).ToUpper()
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">@item.Name</div>
+                                                    <small class="text-muted">@item.Email</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@item.Purpose</td>
+                                        <td>
+                                            <span class="badge bg-primary">@item.QueueNumber</span>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var (statusClass, statusText) = item.Status switch
+                                                {
+                                                    0 => ("bg-warning", "Waiting"),
+                                                    1 => ("bg-info", "In Progress"),
+                                                    2 => ("bg-success", "Completed"),
+                                                    4 => ("bg-danger", "Cancelled"),
+                                                    _ => ("bg-secondary", "Unknown")
+                                                };
+                                            }
+                                            <span class="badge @statusClass">@statusText</span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                        onclick="showAppointmentDetails('@item.AppointmentID', '@item.Name', '@item.Email', '@item.Phone', '@item.Purpose', '@statusText', '@item.QueueNumber', '@item.CreatedTime', '@(item.AdditionalNotes ?? "")')">
+                                                    <i class="fas fa-folder-open"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm"
+                                                        onclick="showNotesModal('@item.AppointmentID', '@(item.AdditionalNotes ?? "")')">
+                                                    <i class="fas fa-comment-medical"></i>
+                                                </button>
+                                                @if (item.Status == 0)
+                                                {
+                                                    <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                                        <input type="hidden" name="id" value="@item.AppointmentID" />
+                                                        <input type="hidden" name="status" value="1" />
+                                                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                                                            <i class="fas fa-play me-1"></i>Start
+                                                        </button>
+                                                    </form>
+                                                }
+                                                @if (item.Status == 1)
+                                                {
+                                                    <button type="button" class="btn btn-outline-success btn-sm"
+                                                            onclick="showReviewModal('@item.AppointmentID')">
+                                                        <i class="fas fa-check me-1"></i>Complete
+                                                    </button>
+                                                }
+                                                @if (item.Status == 0)
+                                                {
+                                                    <form asp-action="DeleteAppointment" method="post" class="d-inline ms-1">
+                                                        <input type="hidden" name="id" value="@item.AppointmentID" />
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                            <i class="fas fa-times me-1"></i>Cancel
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointment Details Modal -->
+<div class="modal fade" id="appointmentDetailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Name</label>
+                    <p id="detailName" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email</label>
+                    <p id="detailEmail" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Phone</label>
+                    <p id="detailPhone" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Purpose</label>
+                    <p id="detailPurpose" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <p id="detailStatus" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Queue Number</label>
+                    <p id="detailQueue" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Created Time</label>
+                    <p id="detailTime" class="mb-1"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Additional Notes</label>
+                    <p id="detailNotes" class="mb-1"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Complete Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <div class="mb-3">
+                        <label class="form-label">Additional Notes</label>
+                        <textarea class="form-control" id="reviewNotes" rows="3" placeholder="Enter any notes about the appointment..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="submitReview()">Complete & Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notes Modal -->
+<div class="modal fade" id="notesModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add/Edit Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="notesForm" asp-action="AddNotes" method="post">
+                    <input type="hidden" id="notesAppointmentId" name="id" />
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-control" id="notesText" name="notes" rows="3" placeholder="Enter notes about the appointment..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitNotes()">Save Notes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .icon-shape {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-initial {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            margin-top: 1rem;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 1rem;
+        }
+
+        /* Calendar styling */
+        .fc-event-dot-only {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        .fc-daygrid-day:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            cursor: pointer;
+        }
+
+        .fc-daygrid-day.selected-day {
+            background-color: rgba(13, 110, 253, 0.15);
+            position: relative;
+        }
+
+        .fc-daygrid-day.selected-day::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid #0d6efd;
+            pointer-events: none;
+        }
+
+        /* Today indicator */
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: rgba(255, 220, 40, 0.15);
+        }
+
+        /* Make event dots more visible */
+        .fc-daygrid-event-dot {
+            border-width: 6px !important;
+            border-color: #28a745 !important;
+        }
+
+        /* Highlight days with events */
+        .fc-day-has-events {
+            background-color: rgba(40, 167, 69, 0.1) !important;
+        }
+
+        /* Style day cells */
+        .fc-daygrid-day-top {
+            padding: 0.25rem !important;
+        }
+
+        .fc-daygrid-day-events {
+            padding: 0 2px !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Store server-provided date values
+        const serverToday = new Date('@ViewBag.Today');
+        const serverTodayISO = '@ViewBag.TodayISO';
+
+        console.log('Server Today:', serverToday);
+        console.log('Server Today ISO:', serverTodayISO);
+
+        // Initialize Chart
+        const ctx = document.getElementById('appointmentChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Waiting', 'In Progress', 'Completed', 'Cancelled'],
+                datasets: [{
+                    data: [@waitingCount, @inProgressCount, @completedCount, @cancelledCount],
+                    backgroundColor: [
+                        '#ffc107',
+                        '#0dcaf0',
+                        '#198754',
+                        '#dc3545'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Initialize Mini Calendar
+        document.addEventListener('DOMContentLoaded', function() {
+            // First load all appointments to find days with appointments
+            fetch('/api/admin/appointments')
+                .then(response => response.json())
+                .then(allAppointments => {
+                    // Create map of dates with events
+                    const datesWithEvents = {};
+                    allAppointments.forEach(appointment => {
+                        const date = new Date(appointment.start);
+                        const dateStr = date.toISOString().split('T')[0];
+                        datesWithEvents[dateStr] = true;
+                    });
+
+                    // Now initialize calendar with this info
+                    initCalendar(datesWithEvents);
+
+                    // Get today's appointments for the table using server value
+                    fetchAppointmentsForDate(serverTodayISO);
+                });
+        });
+
+        function initCalendar(datesWithEvents) {
+            var calendarEl = document.getElementById('miniCalendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: ''
+                },
+                timeZone: 'America/Toronto',
+                height: 300,
+                events: '/api/admin/appointments',
+                eventContent: function(arg) {
+                    return { html: '' }; // Hide event text to just show dots
+                },
+                eventClassNames: function(arg) {
+                    return ['fc-event-dot-only'];
+                },
+                dayCellDidMount: function(info) {
+                    const dateStr = info.date.toISOString().split('T')[0];
+                    console.log('Day Cell Mounted - Date:', dateStr);
+                    if (datesWithEvents[dateStr]) {
+                        info.el.classList.add('fc-day-has-events');
+                    }
+                    // Make the entire cell clickable
+                    info.el.style.cursor = 'pointer';
+                },
+                datesSet: function(info) {
+                    // When the calendar view changes, refresh appointment data
+                    fetch('/api/admin/appointments')
+                        .then(response => response.json())
+                        .then(allAppointments => {
+                            // Create map of dates with appointments
+                            const datesWithEvents = {};
+                            allAppointments.forEach(appointment => {
+                                const date = new Date(appointment.start);
+                                const dateStr = date.toISOString().split('T')[0];
+                                datesWithEvents[dateStr] = true;
+                            });
+
+                            // Mark days with events and make cells clickable
+                            document.querySelectorAll('.fc-daygrid-day').forEach(dayEl => {
+                                const date = new Date(dayEl.getAttribute('data-date'));
+                                const dateStr = date.toISOString().split('T')[0];
+                                if (datesWithEvents[dateStr]) {
+                                    dayEl.classList.add('fc-day-has-events');
+                                } else {
+                                    dayEl.classList.remove('fc-day-has-events');
+                                }
+                                dayEl.style.cursor = 'pointer';
+                            });
+                        });
+                },
+                dateClick: function(info) {
+                    console.log('Date Clicked:', info.dateStr);
+                    console.log('Date Object:', info.date);
+
+                    // Visual feedback for clicked day
+                    document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+                        day.classList.remove('selected-day');
+                    });
+                    info.dayEl.classList.add('selected-day');
+
+                    // Use the date string directly from FullCalendar without timezone conversion
+                    fetchAppointmentsForDate(info.dateStr);
+                }
+            });
+
+            calendar.render();
+
+            // Mark today as selected by default using server value
+            setTimeout(() => {
+                console.log('Setting initial selected day:', serverTodayISO);
+                document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+                    const date = new Date(day.getAttribute('data-date'));
+                    const dateStr = date.toISOString().split('T')[0];
+                    if (dateStr === serverTodayISO) {
+                        day.classList.add('selected-day');
+                    }
+                    day.style.cursor = 'pointer';
+                });
+            }, 100);
+        }
+
+        function fetchAppointmentsForDate(dateStr) {
+            console.log('Fetching appointments for date:', dateStr);
+            // Use the date string directly without timezone conversion
+            fetch(`/api/admin/appointments?date=${dateStr}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched appointments:', data);
+                    updateAppointmentsTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching appointments:', error);
+                    const tableBody = document.getElementById('appointmentsTableBody');
+                    tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">
+                        Error loading appointments. Please try again.
+                    </td></tr>`;
+                });
+        }
+
+        // Update appointments table with filtered data
+        function updateAppointmentsTable(appointments) {
+            const tableBody = document.getElementById('appointmentsTableBody');
+            tableBody.innerHTML = '';
+
+            if (!appointments || appointments.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="5" class="text-center">No appointments found for this date</td>`;
+                tableBody.appendChild(row);
+                return;
+            }
+
+            appointments.forEach(appointment => {
+                const statusText = appointment.extendedProps.statusText;
+                const statusClass = getStatusClass(appointment.extendedProps.status);
+                const row = document.createElement('tr');
+
+                // Format the date for display
+                const appointmentDate = new Date(appointment.start);
+                const torontoDate = new Date(appointmentDate.toLocaleString('en-US', { timeZone: 'America/Toronto' }));
+                const formattedTime = torontoDate.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZone: 'America/Toronto'
+                });
+
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-initial rounded-circle bg-light text-primary me-2">
+                                ${appointment.extendedProps.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="fw-semibold">${appointment.extendedProps.name}</div>
+                                <small class="text-muted">${appointment.extendedProps.email}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${appointment.extendedProps.purpose}</td>
+                    <td>
+                        <span class="badge bg-primary">${appointment.extendedProps.queueNumber}</span>
+                    </td>
+                    <td>
+                        <span class="badge ${statusClass}">${statusText}</span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    onclick="showAppointmentDetails('${appointment.extendedProps.id}', '${appointment.extendedProps.name}', '${appointment.extendedProps.email}', '${appointment.extendedProps.phone}', '${appointment.extendedProps.purpose}', '${statusText}', '${appointment.extendedProps.queueNumber}', '${appointment.start}', '${appointment.extendedProps.additionalNotes || ""}')">
+                                <i class="fas fa-folder-open"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-info btn-sm"
+                                    onclick="showNotesModal('${appointment.extendedProps.id}', '${appointment.extendedProps.additionalNotes || ""}')">
+                                <i class="fas fa-comment-medical"></i>
+                            </button>
+                            ${getActionButtons(appointment.extendedProps.id, appointment.extendedProps.status)}
+                        </div>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Get status class based on status code
+        function getStatusClass(status) {
+            switch (parseInt(status)) {
+                case 0: return 'bg-warning';
+                case 1: return 'bg-info';
+                case 2: return 'bg-success';
+                case 4: return 'bg-danger';
+                default: return 'bg-secondary';
+            }
+        }
+
+        // Get action buttons based on status
+        function getActionButtons(id, status) {
+            let buttons = '';
+            status = parseInt(status);
+
+            if (status === 0) {
+                buttons += `
+                    <form action="/Admin/UpdateAppointmentStatus" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="${id}" />
+                        <input type="hidden" name="status" value="1" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-play me-1"></i>Start
+                        </button>
+                    </form>
+                    <form action="/Admin/DeleteAppointment" method="post" class="d-inline ms-1">
+                        <input type="hidden" name="id" value="${id}" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                    </form>
+                `;
+            } else if (status === 1) {
+                buttons += `
+                    <button type="button" class="btn btn-outline-success btn-sm"
+                            onclick="showReviewModal('${id}')">
+                        <i class="fas fa-check me-1"></i>Complete
+                    </button>
+                `;
+            }
+
+            return buttons;
+        }
+
+        // Show appointment details
+        function showAppointmentDetails(id, name, email, phone, purpose, status, queue, time, notes) {
+            document.getElementById('detailName').textContent = name;
+            document.getElementById('detailEmail').textContent = email;
+            document.getElementById('detailPhone').textContent = phone;
+            document.getElementById('detailPurpose').textContent = purpose;
+            document.getElementById('detailStatus').textContent = status;
+            document.getElementById('detailQueue').textContent = queue;
+            document.getElementById('detailTime').textContent = new Date(time).toLocaleString();
+            document.getElementById('detailNotes').textContent = notes || 'No additional notes';
+
+            new bootstrap.Modal(document.getElementById('appointmentDetailsModal')).show();
+        }
+
+        // Show notes modal
+        function showNotesModal(appointmentId, existingNotes) {
+            document.getElementById('notesAppointmentId').value = appointmentId;
+            document.getElementById('notesText').value = existingNotes;
+            new bootstrap.Modal(document.getElementById('notesModal')).show();
+        }
+
+        // Submit notes
+        function submitNotes() {
+            document.getElementById('notesForm').submit();
+        }
+
+        // Show review modal
+        function showReviewModal(appointmentId) {
+            const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            document.getElementById('reviewForm').dataset.appointmentId = appointmentId;
+            modal.show();
+        }
+
+        // Handle review submission
+        function submitReview() {
+            const notes = document.getElementById('reviewNotes').value;
+            const appointmentId = document.getElementById('reviewForm').dataset.appointmentId;
+
+            // Create and submit the form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/Admin/UpdateAppointmentStatus';
+
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id';
+            idInput.value = appointmentId;
+
+            const statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = '2';
+
+            const notesInput = document.createElement('input');
+            notesInput.type = 'hidden';
+            notesInput.name = 'notes';
+            notesInput.value = notes;
+
+            form.appendChild(idInput);
+            form.appendChild(statusInput);
+            form.appendChild(notesInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        // Handle "View All" button click
+        document.getElementById('viewAllBtn').addEventListener('click', function() {
+            // Clear date selection
+            document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+                day.classList.remove('selected-day');
+            });
+
+            // Fetch all appointments
+            fetch('/api/admin/appointments')
+                .then(response => response.json())
+                .then(data => {
+                    updateAppointmentsTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching all appointments:', error);
+                    const tableBody = document.getElementById('appointmentsTableBody');
+                    tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">
+                        Error loading appointments. Please try again.
+                    </td></tr>`;
+                });
+        });
+    </script>
+}

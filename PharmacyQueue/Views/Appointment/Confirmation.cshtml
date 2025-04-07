@@ -1,0 +1,102 @@
+@model PharmacyQueue.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Confirmation";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-check-circle"></i> Appointment Confirmed!</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="alert alert-info">
+                            <h4 class="alert-heading">Your Queue Number</h4>
+                            <h2 class="display-4 text-primary mb-3">@Model.QueueNumber</h2>
+                            <p class="mb-0">Please save this number for future reference</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Your Position</h5>
+                                    <h2 class="text-primary mb-0">@ViewBag.Position</h2>
+                                    <small>in queue</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Estimated Wait</h5>
+                                    <h2 class="text-primary mb-0">@ViewBag.EstimatedWaitTime</h2>
+                                    <small>minutes</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="appointment-details">
+                        <h4 class="mb-3">Appointment Details</h4>
+                        <table class="table">
+                            <tr>
+                                <th width="30%">Name:</th>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>@Model.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>@Model.Phone</td>
+                            </tr>
+                            <tr>
+                                <th>Purpose:</th>
+                                <td>@Model.Purpose</td>
+                            </tr>
+                            @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
+                            {
+                                <tr>
+                                    <th>Additional Notes:</th>
+                                    <td>@Model.AdditionalNotes</td>
+                                </tr>
+                            }
+                            <tr>
+                                <th>Booking Time:</th>
+                                <td>@Model.CreatedTime.ToString("MMM dd, yyyy hh:mm tt")</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-success mt-4">
+                        <i class="fas fa-envelope"></i> A confirmation email has been sent to <strong>@Model.Email</strong>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a asp-action="Status" asp-route-queueNumber="@Model.QueueNumber" class="btn btn-primary btn-lg">
+                            <i class="fas fa-clock"></i> Check Queue Status
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+} 

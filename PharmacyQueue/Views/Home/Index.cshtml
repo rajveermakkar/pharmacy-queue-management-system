@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <div class="d-flex align-items-center justify-content-center mb-3">
+            <i class="fas fa-clinic-medical text-primary fa-3x me-3"></i>
+            <h1 class="display-4 mb-0">Welcome to Pharmacy Queue System</h1>
+        </div>
+        <p class="lead text-muted">Manage your pharmacy visits efficiently with our digital queue system</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-calendar-plus text-primary fa-4x"></i>
+                    </div>
+                    <h2 class="card-title h3 mb-3">Book Appointment</h2>
+                    <p class="card-text text-muted mb-4">Schedule your pharmacy visit and get a queue number instantly</p>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Instant queue number
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Email confirmation
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Estimated wait time
+                        </li>
+                    </ul>
+                    <a asp-controller="Appointment" asp-action="Book" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-calendar-plus me-2"></i>Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-clock text-primary fa-4x"></i>
+                    </div>
+                    <h2 class="card-title h3 mb-3">Track Queue Status</h2>
+                    <p class="card-text text-muted mb-4">Check your position in the queue and estimated waiting time</p>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Real-time updates
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Current position
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Wait time estimate
+                        </li>
+                    </ul>
+                    <a asp-controller="Appointment" asp-action="Status" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-clock me-2"></i>Check Status
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4><i class="fas fa-info-circle text-primary"></i> Current Queue Information</h4>
+                    <div class="row text-center mt-3">
+                        <div class="col-md-4">
+                            <h5>Current Wait Time</h5>
+                            <p class="h2 text-primary">@ViewBag.AverageWaitTime mins</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>People in Queue</h5>
+                            <p class="h2 text-primary">@ViewBag.PeopleInQueue</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Operating Hours</h5>
+                            <p class="h5">9:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+}

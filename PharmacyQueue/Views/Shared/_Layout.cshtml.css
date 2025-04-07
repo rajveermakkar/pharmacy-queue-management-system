@@ -1,0 +1,482 @@
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* Color Variables */
+:root {
+    --rich-black: #0d1b2a;
+    --oxford-blue: #1b263b;
+    --yinmn-blue: #415a77;
+    --silver-lake-blue: #778da9;
+    --platinum: #e0e1dd;
+
+    /* Semantic Colors */
+    --primary: var(--yinmn-blue);
+    --primary-dark: var(--oxford-blue);
+    --primary-light: var(--silver-lake-blue);
+    --background: var(--platinum);
+    --text-dark: var(--rich-black);
+    --text-light: var(--silver-lake-blue);
+    --white: #ffffff;
+
+    /* Status Colors with New Theme */
+    --success: #4caf50;
+    --warning: #ff9800;
+    --danger: #f44336;
+    --info: var(--silver-lake-blue);
+
+    /* Navbar Colors */
+    --navbar-bg: var(--rich-black);
+    --navbar-text: var(--platinum);
+    --navbar-hover: var(--yinmn-blue);
+}
+
+/* Override Bootstrap Default Colors */
+:root {
+    --bs-primary: var(--primary);
+    --bs-secondary: var(--text-light);
+    --bs-dark: var(--text-dark);
+    --bs-light: var(--platinum);
+}
+
+/* Override Bootstrap Components */
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.bg-success {
+    background-color: var(--success) !important;
+}
+
+.bg-warning {
+    background-color: var(--warning) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger) !important;
+}
+
+.bg-info {
+    background-color: var(--info) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-success {
+    color: var(--success) !important;
+}
+
+.text-warning {
+    color: var(--warning) !important;
+}
+
+.text-danger {
+    color: var(--danger) !important;
+}
+
+.text-info {
+    color: var(--info) !important;
+}
+
+.border-primary {
+    border-color: var(--primary) !important;
+}
+
+.border-success {
+    border-color: var(--success) !important;
+}
+
+.border-warning {
+    border-color: var(--warning) !important;
+}
+
+.border-danger {
+    border-color: var(--danger) !important;
+}
+
+.border-info {
+    border-color: var(--info) !important;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--background);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, var(--rich-black) 0%, var(--oxford-blue) 100%) !important;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(13, 27, 42, 0.2);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--platinum) !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-1px);
+    color: var(--silver-lake-blue) !important;
+}
+
+.nav-link {
+    color: var(--platinum) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+
+.nav-link:hover {
+    background-color: var(--yinmn-blue);
+    transform: translateY(-1px);
+    color: var(--platinum) !important;
+}
+
+.navbar-text {
+    color: var(--navbar-text) !important;
+    font-weight: 500;
+}
+
+/* Button Styles */
+.btn {
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--yinmn-blue) 0%, var(--oxford-blue) 100%);
+    border: none;
+    color: var(--platinum);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--rich-black) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 27, 42, 0.2);
+}
+
+.btn-success {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: var(--white);
+}
+
+.btn-warning {
+    background-color: var(--warning);
+    border-color: var(--warning);
+    color: var(--white);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    border-color: var(--danger);
+    color: var(--white);
+}
+
+.btn-info {
+    background-color: var(--info);
+    border-color: var(--info);
+    color: var(--white);
+}
+
+.btn-outline-primary {
+    color: var(--yinmn-blue);
+    border-color: var(--yinmn-blue);
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--yinmn-blue);
+    border-color: var(--yinmn-blue);
+    color: var(--platinum);
+}
+
+.btn-outline-success {
+    color: var(--success);
+    border-color: var(--success);
+    background-color: transparent;
+}
+
+.btn-outline-success:hover {
+    color: var(--white);
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.btn-outline-warning {
+    color: var(--warning);
+    border-color: var(--warning);
+    background-color: transparent;
+}
+
+.btn-outline-warning:hover {
+    color: var(--white);
+    background-color: var(--warning);
+    border-color: var(--warning);
+}
+
+.btn-outline-danger {
+    color: var(--danger);
+    border-color: var(--danger);
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    color: var(--white);
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-outline-info {
+    color: var(--info);
+    border-color: var(--info);
+    background-color: transparent;
+}
+
+.btn-outline-info:hover {
+    color: var(--white);
+    background-color: var(--info);
+    border-color: var(--info);
+}
+
+.btn-outline-light {
+    color: var(--platinum);
+    border-color: var(--platinum);
+    background-color: transparent;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--yinmn-blue);
+    border-color: var(--platinum);
+    color: var(--platinum);
+}
+
+.btn-outline-secondary {
+    color: var(--text-light);
+    border-color: var(--text-light);
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    color: var(--white);
+    background-color: var(--text-light);
+    border-color: var(--text-light);
+}
+
+.navbar-toggler {
+    border-color: var(--navbar-text);
+    color: var(--navbar-text);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Main Content Area */
+.container {
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Cards */
+.card {
+    background-color: var(--white);
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(13, 27, 42, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(13, 27, 42, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--yinmn-blue) 100%);
+    color: var(--platinum);
+    border-radius: 1rem 1rem 0 0 !important;
+    padding: 1.5rem;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, var(--rich-black) 0%, var(--oxford-blue) 100%);
+    color: var(--platinum);
+    padding: 1.5rem 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: var(--silver-lake-blue);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--platinum);
+}
+
+/* Table Styles */
+.table {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--oxford-blue);
+    color: var(--platinum);
+    border: none;
+    padding: 1rem;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(119, 141, 169, 0.1);
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+    border-radius: 0.5rem;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, var(--yinmn-blue) 0%, var(--oxford-blue) 100%) !important;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    background-color: var(--white);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--oxford-blue) 0%, var(--yinmn-blue) 100%);
+    color: var(--platinum);
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    color: var(--platinum);
+    font-weight: 500;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--platinum);
+    background-color: var(--white);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--silver-lake-blue);
+    box-shadow: 0 0 0 0.25rem rgba(119, 141, 169, 0.25);
+}
+
+.input-group-text {
+    background-color: var(--platinum);
+    border: 1px solid var(--platinum);
+    color: var(--yinmn-blue);
+}
+
+/* Calendar Styles */
+.fc-button-primary {
+    background-color: var(--yinmn-blue) !important;
+    border-color: var(--yinmn-blue) !important;
+}
+
+.fc-button-primary:hover {
+    background-color: var(--oxford-blue) !important;
+    border-color: var(--oxford-blue) !important;
+}
+
+.fc-event {
+    background-color: var(--yinmn-blue) !important;
+    border-color: var(--oxford-blue) !important;
+}
+
+/* Chart Styles */
+.chart-container {
+    background-color: var(--white);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(13, 27, 42, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: linear-gradient(135deg, var(--rich-black) 0%, var(--oxford-blue) 100%);
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        padding: 1rem;
+    }
+
+    .nav-link {
+        padding: 0.8rem 1rem !important;
+    }
+
+    .navbar-text {
+        display: block;
+        padding: 0.8rem 1rem;
+    }
+
+    .btn-outline-light {
+        width: 100%;
+        margin: 0.5rem 1rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--platinum);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--silver-lake-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--yinmn-blue);
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.alert-primary {
+    background-color: rgba(65, 90, 119, 0.1);
+    color: var(--yinmn-blue);
+}

@@ -1,0 +1,432 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Color Variables */
+:root {
+    --federal-blue: #03045eff;
+    --honolulu-blue: #0077b6ff;
+    --pacific-cyan: #00b4d8ff;
+    --non-photo-blue: #90e0efff;
+    --light-cyan: #caf0f8ff;
+
+    /* Semantic Colors */
+    --primary: var(--honolulu-blue);
+    --primary-dark: var(--federal-blue);
+    --primary-light: var(--pacific-cyan);
+    --background: var(--light-cyan);
+    --text-dark: var(--federal-blue);
+    --text-light: var(--honolulu-blue);
+    --white: #ffffff;
+    
+    /* Status Colors */
+    --success: #2dd4bf;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: var(--pacific-cyan);
+}
+
+/* Override Bootstrap Default Colors */
+:root {
+    --bs-primary: var(--primary);
+    --bs-secondary: var(--text-light);
+    --bs-dark: var(--text-dark);
+    --bs-light: var(--light-cyan);
+}
+
+/* Base Styles */
+body {
+    background-color: var(--background);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Modern Navbar Styles */
+.navbar {
+    background-color: var(--white) !important;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(3, 4, 94, 0.08);
+    box-shadow: 0 1px 3px 0 rgba(3, 4, 94, 0.1), 0 1px 2px -1px rgba(3, 4, 94, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--federal-blue) !important;
+    letter-spacing: -0.5px;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.navbar-brand::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--federal-blue);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-link {
+    color: var(--federal-blue) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--light-cyan);
+    border-radius: 0.5rem;
+    z-index: -1;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover::before {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.nav-link.active {
+    color: var(--honolulu-blue) !important;
+    background-color: var(--light-cyan);
+}
+
+.navbar-text {
+    color: var(--federal-blue) !important;
+    font-weight: 500;
+}
+
+/* Button Styles */
+.btn {
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background-color: var(--honolulu-blue) !important;
+    border: none !important;
+    color: var(--white) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--federal-blue) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+}
+
+.btn-outline-primary {
+    color: var(--honolulu-blue) !important;
+    border-color: var(--honolulu-blue) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--honolulu-blue) !important;
+    color: var(--white) !important;
+}
+
+/* Login Button */
+.navbar .btn-outline-light {
+    border: 2px solid var(--federal-blue);
+    color: var(--federal-blue);
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    margin-left: 0.5rem;
+}
+
+.navbar .btn-outline-light:hover {
+    background-color: var(--federal-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.navbar .btn-outline-light:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--white);
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(3, 4, 94, 0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(3, 4, 94, 0.1);
+}
+
+.card-header {
+    background-color: var(--federal-blue) !important;
+    color: var(--white);
+    border-radius: 1rem 1rem 0 0 !important;
+    padding: 1.25rem;
+    border: none;
+}
+
+/* Container Styles */
+.container {
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(3, 4, 94, 0.05);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: var(--federal-blue);
+    color: var(--white);
+    padding: 1.5rem 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: var(--non-photo-blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.footer a:hover {
+    color: var(--white);
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--non-photo-blue);
+    background-color: var(--white);
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--honolulu-blue);
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
+}
+
+.input-group-text {
+    background-color: var(--light-cyan);
+    border: 1px solid var(--non-photo-blue);
+    color: var(--federal-blue);
+}
+
+/* Table Styles */
+.table {
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--federal-blue) !important;
+    color: var(--white) !important;
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: var(--light-cyan);
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    letter-spacing: 0.025em;
+}
+
+/* Calendar Styles */
+.fc-button-primary {
+    background-color: var(--honolulu-blue) !important;
+    border-color: var(--honolulu-blue) !important;
+    color: var(--white) !important;
+    font-weight: 500;
+}
+
+.fc-button-primary:hover {
+    background-color: var(--federal-blue) !important;
+    border-color: var(--federal-blue) !important;
+}
+
+.fc-event {
+    background-color: var(--pacific-cyan) !important;
+    border-color: var(--honolulu-blue) !important;
+    border-radius: 0.375rem;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    background-color: var(--white);
+    box-shadow: 0 20px 25px -5px rgba(3, 4, 94, 0.1), 0 10px 10px -5px rgba(3, 4, 94, 0.04);
+}
+
+.modal-header {
+    background-color: var(--federal-blue);
+    color: var(--white);
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.25rem;
+    border: none;
+}
+
+.modal-title {
+    color: var(--white);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-cyan);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--pacific-cyan);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--honolulu-blue);
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: var(--white);
+        border-radius: 0.75rem;
+        margin-top: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(3, 4, 94, 0.1), 0 2px 4px -2px rgba(3, 4, 94, 0.1);
+    }
+    
+    .nav-link {
+        color: var(--federal-blue) !important;
+        padding: 0.75rem 1rem !important;
+        margin: 0.25rem 0;
+    }
+    
+    .navbar-text {
+        color: var(--federal-blue) !important;
+        display: block;
+        padding: 0.75rem 1rem;
+        margin: 0.25rem 0;
+    }
+    
+    .btn-outline-primary {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-content .spinner-border {
+    width: 4rem;
+    height: 4rem;
+    border-width: 0.25rem;
+}
+
+.loading-content h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.loading-content p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
